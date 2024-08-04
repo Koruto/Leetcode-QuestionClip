@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Copy Leetcode Problem",
+  "version": "1.0",
+
+  "description": "Easily copy the current LeetCode problem description to your clipboard.",
+  "icons": {
+    "48": "./icons/default-copy.png"
+  },
+
+  "permissions": ["activeTab", "tabs", "clipboardWrite"],
+
+  "browser_action": {
+    "default_icon": "./icons/default-copy.png",
+    "default_title": "Copy problem!"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://leetcode.com/problems/*/description/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

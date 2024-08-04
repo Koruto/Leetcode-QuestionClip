@@ -1,0 +1,13 @@
+{
+  "name": "leetcode-questionclip",
+  "version": "1.0.0",
+  "description": "An extension that copies the Leetcode question with desired formatting into the clipboard.",
+  "main": "manifest.json",
+  "scripts": {
+    "dev": "web-ext run --devtools",
+    "build": "web-ext build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Koruto",
+  "license": "ISC"
+}
