@@ -5,13 +5,13 @@
 
   "description": "Easily copy the current LeetCode problem description to your clipboard.",
   "icons": {
-    "48": "./icons/default-copy.png"
+    "64": "icons/copy.png"
   },
 
   "permissions": ["activeTab", "tabs", "clipboardWrite"],
 
   "browser_action": {
-    "default_icon": "./icons/default-copy.png",
+    "default_icon": "icons/copy.png",
     "default_title": "Copy problem!"
   },
 

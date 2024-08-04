@@ -57,8 +57,14 @@ function getQuestionDescription() {
   // Replace <strong>, <em>, and <code> tags with Markdown equivalents
   const markdownContent = htmlContent
     .replace(/<strong\b[^>]*>(.*?)<\/strong>/gi, '**$1**') // Replace <strong>content</strong> with **content**
-    .replace(/<em\b[^>]*>(.*?)<\/em>/gi, '*$1*') // Replace <em>content</em> with *content*
-    .replace(/<code\b[^>]*>(.*?)<\/code>/gi, '`$1`'); // Replace <code>content</code> with `content`
+    .replace(/<code\b[^>]*>(.*?)<\/code>/gi, '`$1`') // Replace <code>content</code> with `content`
+    .replace(/<em\b[^>]*>(.*?)<\/em>/gi, (match, innerContent) => {
+      // Trim inner content to remove leading and trailing spaces
+      const trimmedContent = innerContent.trim();
+
+      // Add spaces around the * for Markdown emphasis
+      return ` *${trimmedContent}* `;
+    });
 
   // Create a temporary div to parse the modified HTML
   const tempDiv = document.createElement('div');
