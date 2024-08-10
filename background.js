@@ -18,6 +18,10 @@ function resetIcon(time = 800) {
   }, time);
 }
 
+function setLoadingIcon() {
+  setIconAndTitle(activeTabId, './icons/loading.png', 'Loading...');
+}
+
 function setSuccessIcon() {
   setIconAndTitle(
     activeTabId,
@@ -92,13 +96,42 @@ browser.runtime.onMessage.addListener((message) => {
 // Trigger the copy action from the browser action click
 browser.browserAction.onClicked.addListener((tab) => {
   activeTabId = tab.id;
+
+  // Set loading icon
+  setLoadingIcon();
+
+  // Inject a script to wait for DOMContentLoaded
   browser.tabs
-    .sendMessage(tab.id, { action: 'copyToClipboard' })
-    .then((response) => {
-      console.log('Message sent to content script:', response);
+    .executeScript(tab.id, {
+      code: `
+      new Promise((resolve) => {
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+          resolve(true);
+        } else {
+          document.addEventListener('DOMContentLoaded', () => resolve(true), { once: true });
+        }
+      });
+    `,
+    })
+    .then((result) => {
+      if (result[0] === true) {
+        // Inject and execute the content script
+        return browser.tabs.executeScript(tab.id, { file: 'content.js' });
+      } else {
+        throw new Error('DOM did not load properly.');
+      }
+    })
+    .then((results) => {
+      const result = results[0];
+      if (result && result.success) {
+        setSuccessIcon();
+      } else {
+        setErrorIcon();
+        console.error('Failed to copy question to clipboard:', result.error);
+      }
     })
     .catch((error) => {
-      console.error('Error sending message to content script:', error);
+      console.error('Error executing content script:', error);
       setErrorIcon();
     });
 });

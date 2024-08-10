@@ -65,4 +65,4 @@ Return the sum of the numbers from index _`left`_ to index \_`right` (**indexed 
 
 ### Credits
 
-- Icons provided by [Icons8](https://icons8.com).
+- Icons provided by [Flaticon](https://www.flaticon.com/packs/file-and-document-125).
